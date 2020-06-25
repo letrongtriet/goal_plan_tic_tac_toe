@@ -12,8 +12,7 @@ class GamePresenter {
   GameInfoRepository _repository;
   Ai _aiPlayer;
 
-  GamePresenter(this.showMoveOnUi, this.showGameEnd) {
-    _repository = GameInfoRepository.getInstance();
+  GamePresenter(this.showMoveOnUi, this.showGameEnd, this._repository) {
     _aiPlayer = Ai();
   }
 
@@ -28,7 +27,7 @@ class GamePresenter {
     // calculate the next move, could be an expensive operation
     int aiMove = await Future(() => _aiPlayer.play(board, Ai.AI_PLAYER));
 
-    Future.delayed(const Duration(milliseconds: 500), () {
+    Future.delayed(const Duration(seconds: 1), () {
       // do the next move
       board[aiMove] = Ai.AI_PLAYER;
 

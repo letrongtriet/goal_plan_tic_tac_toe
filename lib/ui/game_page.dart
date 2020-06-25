@@ -1,28 +1,31 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:goal_plan_tic_tac_toe/ai/ai.dart';
+import 'package:goal_plan_tic_tac_toe/storage/game_info_repository.dart';
 import 'package:goal_plan_tic_tac_toe/ui/field.dart';
 import 'package:goal_plan_tic_tac_toe/ui/game_presenter.dart';
 
 class GamePage extends StatefulWidget {
 
   final String title;
+  final GameInfoRepository repository;
 
-  GamePage(this.title);
+  GamePage(this.title, this.repository);
 
   @override
-  GamePageState createState() => GamePageState();
+  GamePageState createState() => GamePageState(repository);
 }
 
 class GamePageState extends State<GamePage> {
 
   List<int> board;
   int _currentPlayer;
-  
+  GameInfoRepository _repository;
+
   GamePresenter _presenter;
 
-  GamePageState() {
-    this._presenter = GamePresenter(_movePlayed, _onGameEnd);
+  GamePageState(this._repository) {
+    this._presenter = GamePresenter(_movePlayed, _onGameEnd, _repository);
   }
 
   void _randomPlay() {

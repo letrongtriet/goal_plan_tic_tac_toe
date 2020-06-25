@@ -9,48 +9,49 @@ class GameInfoRepository {
   int lose = 0;
   int play = 0;
 
-  static GameInfoRepository _victoryRepository;
-  StreamingSharedPreferences preferences;
+  static GameInfoRepository repository;
+  static StreamingSharedPreferences preferences;
 
-  static GameInfoRepository getInstance() {
-    if (_victoryRepository == null) {
-      _victoryRepository = GameInfoRepository();
+  static Future<GameInfoRepository> getInstance() async {
+    if (repository == null) {
+      repository = GameInfoRepository();
     }
-    return _victoryRepository;
+
+    if (preferences == null) {
+      preferences = await StreamingSharedPreferences.instance;
+    }
+
+    return repository;
   }
 
-  Future<Null> createPreference() async {
-    preferences = await StreamingSharedPreferences.instance;
-  }
-
-  Future<Preference<int>> getVictoryCount() async {
+  Preference<int> getVictoryCount() {
     return preferences.getInt(WIN_COUNT, defaultValue: 0);
   }
 
-  Future<Preference<int>> getLoseCount() async {
+  Preference<int> getLoseCount() {
     return preferences.getInt(LOSE_COUNT, defaultValue: 0);
   }
 
-  Future<Preference<int>> getGamePlay() async {
+  Preference<int> getGamePlay() {
     return preferences.getInt(PLAY_COUNT, defaultValue: 0);
   }
 
-  void addVictory() async {
+  void addVictory() {
     win += 1;
     preferences.setInt(WIN_COUNT, win);
   }
 
-  void addLose() async {
+  void addLose() {
     lose += 1;
     preferences.setInt(LOSE_COUNT, lose);
   }
 
-  void addGamePlay() async {
+  void addGamePlay() {
     play += 1;
     preferences.setInt(PLAY_COUNT, play);
   }
 
-  void resetAll() async {
+  void resetAll() {
     win = 0;
     lose = 0;
     play = 0;
